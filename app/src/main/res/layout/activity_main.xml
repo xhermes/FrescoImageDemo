@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -11,13 +12,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/start_btn"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:text="開始" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/switch_btn"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -35,6 +36,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/single_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/single"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/second"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"  />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/third"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"  />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/lottie_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie1"
+            app:lottie_fileName="bootymovin.json"
+            android:layout_width="match_parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:layout_height="150dp" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie2"
+            app:lottie_fileName="payme.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
     </LinearLayout>
 
 </LinearLayout>

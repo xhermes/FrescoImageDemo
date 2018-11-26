@@ -1,11 +1,11 @@
 package me.xeno.frescoimagedemo;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Choreographer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.AbstractDraweeController;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -25,6 +26,9 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 //    private SimpleDraweeView ivStatic;
 //    private SimpleDraweeView ivMove;
@@ -33,6 +37,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mStartButton;
     private Button mSwitchButton;
     private TextView mCurrentView;
+
+    private View mSingleLayout;
+
+    private LinearLayout mLottieLayout;
+    private LottieAnimationView mLottie1View;
+    private LottieAnimationView mLottie2View;
+
+//    private CpuSampler mCpuSampler;
 
 //    private DraweeController mController;
 
@@ -45,36 +57,78 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mStartButton = (Button) findViewById(R.id.start_btn);
         mSwitchButton = (Button) findViewById(R.id.switch_btn);
         mCurrentView = (TextView) findViewById(R.id.current);
-
+        mContainer = (LinearLayout) findViewById(R.id.container);
+        mSingleLayout = findViewById(R.id.single_layout);
         init();
+//        initSingleImage();
+        initLottie();
 
         mStartButton.setOnClickListener(this);
         mSwitchButton.setOnClickListener(this);
 
-        Choreographer.getInstance().postFrameCallback(new FpsCallback());
+//        Choreographer.getInstance().postFrameCallback(new FpsCallback());
+//        mCpuSampler = new CpuSampler(100);
     }
 
     private void init() {
-        mContainer = (LinearLayout) findViewById(R.id.container);
         //豎排
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 1; i++) {
             createHorizontalLayout();
         }
+        findViewById(R.id.single).setVisibility(View.GONE);
+    }
+
+    private void initSingleImage() {
+        mContainer.setVisibility(View.GONE);
+
+        SimpleDraweeView singleView = findViewById(R.id.single);
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(Uri.parse("res://" + getApplication().getPackageName() + "/" + R.drawable.angelwebp))
+                .setControllerListener(controllerListener)
+                .build();
+        singleView.setController(controller);
+
+        SimpleDraweeView secView = findViewById(R.id.second);
+        DraweeController controller2 = Fresco.newDraweeControllerBuilder()
+                .setUri(Uri.parse("res://" + getApplication().getPackageName() + "/" + R.drawable.angelwebp))
+                .setControllerListener(controllerListener)
+                .build();
+        secView.setController(controller2);
+//
+//        SimpleDraweeView thrView = findViewById(R.id.third);
+//        DraweeController controller3 = Fresco.newDraweeControllerBuilder()
+//                .setUri(Uri.parse("res://" + getApplication().getPackageName() + "/" + R.drawable.angelwebp))
+//                .setControllerListener(controllerListener)
+//                .build();
+//        thrView.setController(controller3);
+    }
+
+    private void initLottie() {
+        mSingleLayout.setVisibility(View.GONE);
+        mContainer.setVisibility(View.GONE);
+
+        mLottie1View = findViewById(R.id.lottie1);
+        mLottie2View = findViewById(R.id.lottie2);
+
+        mLottie1View.playAnimation();
+        mLottie2View.setVisibility(View.GONE);
+//        mLottie2View.playAnimation();
     }
 
     private void createHorizontalLayout() {
         LinearLayout ll = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.layout_horizontal, mContainer, false);
         //橫排
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 1; i++) {
             createSimpleDrawee(ll);
         }
         mContainer.addView(ll);
     }
 
+    @SuppressLint("NewApi")
     private void createSimpleDrawee(ViewGroup parent) {
         SimpleDraweeView sdv = new SimpleDraweeView(this);
         sdv.setBackgroundColor(getColor(R.color.colorPrimary));
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dip2px(this, 50), dip2px(this, 50));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dip2px(this, 200), dip2px(this, 100));
         sdv.setLayoutParams(lp);
         parent.addView(sdv);
     }
@@ -90,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (int j = 0; j < ll.getChildCount(); j++) {
                     SimpleDraweeView sdv = (SimpleDraweeView) ll.getChildAt(j);
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
-                            .setUri(Uri.parse("res://" + getApplication().getPackageName() + "/" + R.drawable.testgif))
+                            .setUri(Uri.parse("res://" + getApplication().getPackageName() + "/" + R.drawable.angelsmall))
                             .setControllerListener(controllerListener)
                             .build();
                     sdv.setController(controller);
@@ -110,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (int j = 0; j < ll.getChildCount(); j++) {
                     SimpleDraweeView sdv = (SimpleDraweeView) ll.getChildAt(j);
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
-                            .setUri(Uri.parse("res://" + getApplication().getPackageName() + "/" + R.drawable.test))
+                            .setUri(Uri.parse("res://" + getApplication().getPackageName() + "/" + R.drawable.angelwebp))
                             .setControllerListener(controllerListener)
                             .build();
                     sdv.setController(controller);
@@ -125,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.start_btn:
                 testGif();
+                //开跑cpuSampler
+//                mCpuSampler.start();
                 break;
             case R.id.switch_btn:
                 if(mCurrentView.getText().equals("webp"))
@@ -185,4 +241,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     };
+
+//    @Override
+//    public void onTrimMemory(int level) {
+//        super.onTrimMemory(level);
+//        Log.i("xeno", "onTrimMem, level:" + level);
+//    }
 }
